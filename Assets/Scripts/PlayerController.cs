@@ -10,10 +10,7 @@ public class PlayerController : MonoBehaviour
     public Camera _cam;
 
     //進む方向の格納
-    private Vector3 _playerPos;
-
-    //進む方向の格納
-    private Vector3 _movement;
+    private Vector3 _playerPos, _movement;
 
     //レイを飛ばすオブジェクトの位置
     public Transform _groundCheckPoint;
@@ -41,15 +38,15 @@ public class PlayerController : MonoBehaviour
     public Vector3 _jumpForce = new Vector3(0, 6, 0);
 
     //現フィーバー値、最大フィーバー値、減少速度、減少値
-    public float _feverCount = 0;
-    public float _maxFeverValue = 100;
-    public float _feverInterval = 1;
-    public float _decrease = 0.1f;
+    public float _feverCount = 0, _maxFeverValue = 100;
+    public float _feverInterval = 1, _decrease = 0.1f;
 
     //移動速度,加速間隔,加速度
-    public float _moveSpeed = 4f;
-    public float _interval = 0.1f;
-    public float _accel = 0.1f;
+    public float _moveSpeed = 4f, _interval = 0.1f, _accel = 0.1f;
+
+    //bulletプレハブ
+    public GameObject _bulletPrefab;
+    public Transform _muzzle;
 
     //プレイヤーHPのUI用オブジェクト
     public GameObject[] _playerHpUI;
@@ -69,6 +66,7 @@ public class PlayerController : MonoBehaviour
         PlayerMove();
         Jump();
         Sliding();
+        BulletFire();
     }
 
     public void Fever()
@@ -147,8 +145,8 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        //地面についている、かつスペースキーが押されたとき
-        if (IsGround() && Input.GetKeyDown(KeyCode.Space))
+        //地面についているかつ、スペースキーまたはWキーが押されたとき
+        if (IsGround() && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)))
         {
             _rb.AddForce(_jumpForce, ForceMode.Impulse);
             Debug.Log("やっふぅぅぅ");
@@ -160,10 +158,22 @@ public class PlayerController : MonoBehaviour
 
     public void Sliding()
     {
-        //地面についている、かつ左シフトキーが押されたとき
-        if (IsGround() && Input.GetKeyDown(KeyCode.LeftShift))
+        //地面についているかつ、左シフトキーまたはSキーが押されたとき
+        if (IsGround() && (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.S)))
         {
             StartCoroutine("SwitchSliding");
+        }
+    }
+
+    public void BulletFire()
+    {
+        //残弾ありの状態で、左クリックをしたら
+        if (_playerBullet > 0 && Input.GetMouseButtonDown(0))
+        {
+            _playerBullet--;
+            GameObject bullet = Instantiate(_bulletPrefab);
+            bullet.transform.position = _muzzle.position;
+            Debug.Log("とんでけ～");
         }
     }
 
