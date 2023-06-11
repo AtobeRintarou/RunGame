@@ -7,48 +7,68 @@ using UnityEngine.UIElements;
 public class PlayerController : MonoBehaviour
 {
     //カメラ
+    [Header("--- Camera ---")]
     public Camera _cam;
 
     //進む方向の格納
-    private Vector3 _playerPos, _movement;
+    [HideInInspector]
+    public Vector3 _playerPos, _movement;
 
     //レイを飛ばすオブジェクトの位置
+    [Space(15), Header("--- 地面設置判定 ---")]
     public Transform _groundCheckPoint;
 
     //地面レイヤー
     public LayerMask _groundLayers;
 
     //剛体
-    private Rigidbody _rb;
+    [HideInInspector]
+    public Rigidbody _rb;
 
     //プレイヤーのコライダー
-    private CapsuleCollider _capsuleCol;
-    
+    [HideInInspector]
+    public CapsuleCollider _capsuleCol;
+
     //タイマー
-    private float _time, _feverTimer;
+    [HideInInspector]
+    public float _time, _feverTimer;
 
     //ジャンプ中、スライディング中、フィーバー中か否か
-    private bool isJump = false, isSliding = false, isFever = false;
+    [HideInInspector]
+    public bool isJump = false, isSliding = false, isFever = false;
 
     //プレイヤーの各ステータス
+    [Space(15), Header("--- Playerステータス ---")]
     public float _playerHp = 3;
     public float _playerAttack = 10;
-    public float _playerBullet = 3;
 
     public Vector3 _jumpForce = new Vector3(0, 6, 0);
 
-    //現フィーバー値、最大フィーバー値、減少速度、減少値
-    public float _feverCount = 0, _maxFeverValue = 100;
-    public float _feverInterval = 1, _decrease = 0.1f;
-
     //移動速度,加速間隔,加速度
-    public float _moveSpeed = 4f, _interval = 0.1f, _accel = 0.1f;
+    public float _moveSpeed = 4f;
 
-    //bulletプレハブ
+    [Header("加速度")]
+    public float _interval = 0.1f;
+    public float _accel = 0.1f;
+
+    //現フィーバー値、最大フィーバー値、減少速度、減少値
+    [Space(15), Header("--- Fever関連 ---")]
+    public float _feverCount = 0;
+    public float _maxFeverValue = 100;
+    [Tooltip("減少速度")]
+    public float _feverInterval = 1;
+    [Tooltip("減少値")]
+    public float _decrease = 0.1f;
+
+    //bullet
+    [Space(15),Header("--- Bullet関連 ---")]
+    public float _playerBullet = 3;
     public GameObject _bulletPrefab;
     public Transform _muzzle;
 
+
     //プレイヤーHPのUI用オブジェクト
+    [Space(15), Header("--- PlayerHPのUI ---")]
     public GameObject[] _playerHpUI;
 
 
