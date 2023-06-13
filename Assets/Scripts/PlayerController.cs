@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     //ÉJÉÅÉâ
     [Header("--- Camera ---")]
-    public Camera _cam;
+    public GameObject _cam;
 
     //êiÇﬁï˚å¸ÇÃäiî[
     [HideInInspector]
@@ -74,10 +74,11 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        DontDestroyOnLoad(this);
+        _cam = GameObject.Find("Camera");
         _rb = GetComponent<Rigidbody>();
         _capsuleCol = GetComponent<CapsuleCollider>();
         _playerPos = this.transform.position;
-
     }
 
     void Update()
@@ -130,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
         //zï˚å¸à⁄ìÆ
         this.transform.position += _movement * _moveSpeed * Time.deltaTime;
-        _cam.transform.position += _movement * _moveSpeed * Time.deltaTime;
+        if (_cam) { _cam.transform.position += _movement * _moveSpeed * Time.deltaTime;}
 
         _time += Time.deltaTime;
 
@@ -147,14 +148,14 @@ public class PlayerController : MonoBehaviour
                 _playerPos.x -= (float)1.5;
                 _playerPos.z = this.transform.position.z;
                 this.transform.position = _playerPos;
-                Debug.Log("ç∂Ç…Ç§Ç°Ç°Ç°");
+                //Debug.Log("ç∂Ç…Ç§Ç°Ç°Ç°");
             }
             else if (this.transform.position.x < 1.5 && Input.GetKeyDown(KeyCode.D))
             {
                 _playerPos.x += (float)1.5;
                 _playerPos.z = this.transform.position.z;
                 this.transform.position = _playerPos;
-                Debug.Log("âEÇ…Ç”Ç£Ç£Ç£");
+                //Debug.Log("âEÇ…Ç”Ç£Ç£Ç£");
             }
             else if ((this.transform.position.x == -1.5 || this.transform.position.x == 1.5) && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)))
             {
@@ -169,7 +170,7 @@ public class PlayerController : MonoBehaviour
         if (IsGround() && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)))
         {
             _rb.AddForce(_jumpForce, ForceMode.Impulse);
-            Debug.Log("Ç‚Ç¡Ç”Ç£Ç£Ç£");
+            //Debug.Log("Ç‚Ç¡Ç”Ç£Ç£Ç£");
         }
 
         if (IsGround()) isJump = false;
@@ -193,22 +194,28 @@ public class PlayerController : MonoBehaviour
             _playerBullet--;
             GameObject bullet = Instantiate(_bulletPrefab);
             bullet.transform.position = _muzzle.position;
-            Debug.Log("Ç∆ÇÒÇ≈ÇØÅ`");
+            //Debug.Log("Ç∆ÇÒÇ≈ÇØÅ`");
         }
+    }
+
+    public void BossFase()
+    {
+        _moveSpeed = 0;
+        _interval = 0;
     }
 
     IEnumerator SwitchSliding()
     {
         isSliding = true;
         _capsuleCol.height = 1;
-        Debug.Log("Ç∏Ç¥ÇüÇüÇüÇü");
+        //Debug.Log("Ç∏Ç¥ÇüÇüÇüÇü");
 
         //1.5ïbë“Ç¬
         yield return new WaitForSeconds((float)1.5);
 
         isSliding = false;
         _capsuleCol.height = 2;
-        Debug.Log("Ç∑ÇΩÇ¡Ç¡");
+        //Debug.Log("Ç∑ÇΩÇ¡Ç¡");
     }
 
     //ínñ Ç…Ç¬Ç¢ÇƒÇ¢ÇÍÇŒ true

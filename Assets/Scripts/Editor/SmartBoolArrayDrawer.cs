@@ -12,6 +12,7 @@ public class SmartBoolArrayDrawer : Editor
 
         bossSkills._skillSpeed = EditorGUILayout.FloatField("技速度", bossSkills._skillSpeed);
         bossSkills._waitTime = EditorGUILayout.FloatField("警告時間（秒）", bossSkills._waitTime);
+        bossSkills._lifeTime = EditorGUILayout.FloatField("スキル表示時間（秒）", bossSkills._lifeTime);
 
         EditorGUILayout.Space(20);
 
@@ -56,5 +57,9 @@ public class SmartBoolArrayDrawer : Editor
         bossSkills._skillRange[7] = EditorGUILayout.Toggle(bossSkills._skillRange[7], GUILayout.Width(30));
         bossSkills._skillRange[8] = EditorGUILayout.Toggle(bossSkills._skillRange[8], GUILayout.Width(30));
         EditorGUILayout.EndHorizontal();
+        EditorGUILayout.Space(20);
+
+        bossSkills.IsSkillCheck = EditorGUILayout.Toggle("大技", bossSkills.IsSkillCheck);
+        bossSkills._breakPoint = (GameObject)EditorGUILayout.ObjectField("弱点Obj", bossSkills._breakPoint, typeof(GameObject), false);
     }
 }

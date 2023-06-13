@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - Boss
+  - Break
+  - Attack
   layers:
   - Default
   - TransparentFX
@@ -14,8 +16,8 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - 
-  - 
+  - Boss
+  - Break
   - 
   - 
   - 
